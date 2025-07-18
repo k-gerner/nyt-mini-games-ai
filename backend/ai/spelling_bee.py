@@ -1,6 +1,5 @@
 from typing import Set, List
-
-word_list = []
+from utils.data_store import common_word_list
 
 def spelling_bee_sort(word: str, center_letter: str, outer_letters: Set[str]) -> int:
     """
@@ -39,7 +38,7 @@ def run(center_letter: str, outer_letters: Set[str]) -> List[str]:
     center_letter = center_letter.lower()
     outer_letters = {letter.lower() for letter in outer_letters}
     valid_words = []
-    for word in word_list:
+    for word in common_word_list:
         if len(word) < 4:
             continue
         if center_letter not in word:

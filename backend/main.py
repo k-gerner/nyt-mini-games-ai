@@ -8,16 +8,18 @@ import logging
 
 import ai.spelling_bee as spelling_bee
 from utils.read_word_list import load_words
+from utils.data_store import common_word_list
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Load the word lists
     # spelling_bee.word_list = load_words('data/all_words.txt')
-    spelling_bee.word_list = load_words('data/common_words.txt')
+    # spelling_bee.word_list = load_words('data/common_words.txt')
+    common_word_list[:] = load_words('data/common_words.txt') 
     logging.info("Word list loaded successfully.")
     yield
     # Clean up the word lists and release the resources
-    spelling_bee.word_list.clear()
+    common_word_list.clear()
 
 app = FastAPI(lifespan=lifespan)
 # app = FastAPI()
