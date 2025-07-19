@@ -7,6 +7,7 @@ import asyncio
 import logging
 
 import ai.spelling_bee as spelling_bee
+import ai.letter_boxed as letter_boxed
 from utils.read_word_list import load_words
 from utils.data_store import common_word_list
 
@@ -62,5 +63,28 @@ async def solve_spelling_bee(input: SpellingBeeInput):
     Returns:
         dict: A dictionary containing the list of valid words.
     """
-    valid_words = spelling_bee.run(input.center_letter, set(input.outer_letters))
+    lower_outer_letters = {letter.lower() for letter in input.outer_letters}
+    valid_words = spelling_bee.run(input.center_letter.lower(), lower_outer_letters)
     return {"words": valid_words}
+
+
+class LetterBoxedInput(BaseModel):
+    letter_sides: List[List[str]]
+    only_length_two: bool = False
+
+
+@app.post("/api/letter_boxed")
+async def solve_letter_boxed(input: LetterBoxedInput):
+    """
+    Solve the Letter Boxed puzzle with the provided letter sides.
+    
+    Args:
+        letter_sides (List[List[str]]): A list of lists containing letters from each side of the box.
+        
+    Returns:
+        dict: A dictionary containing the list of valid word combinations.
+    """
+    lower_letter_sides = [[letter.lower() for letter in side] for side in input.letter_sides]
+    letter_sets = [set(side) for side in lower_letter_sides]
+    solutions = letter_boxed.run(letter_sets, input.only_length_two)
+    return {"solutions": solutions}
