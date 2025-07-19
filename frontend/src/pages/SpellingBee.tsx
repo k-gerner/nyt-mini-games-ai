@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../App.css'
 
 const WORDS_PER_PAGE = 5;
@@ -9,6 +9,7 @@ const SpellingBee = () => {
     const [outerLetters, setOuterLetters] = useState('');
     const [solution, setSolution] = useState('');
     const [pageNumber, setPageNumber] = useState(0);
+    const outerLettersRef = useRef<HTMLInputElement>(null);
 
     const handleSolve = async () => {
         const res = await fetch('http://localhost:5001/api/spelling_bee', {
@@ -28,6 +29,11 @@ const SpellingBee = () => {
     const handleCenterLetterChange = (input: any) => {
         const val = input.target.value.toUpperCase().replace(/[^A-Z]/g, '');;
         setCenterLetter(val);
+
+        // Automatically move focus to the outer letters input when the center letter is filled
+        if (val.length === 1 && outerLettersRef.current) {
+            outerLettersRef.current.focus();
+        }
     }
     const handleOuterLettersChange = (input: any) => {
         const val = input.target.value.toUpperCase().replace(/[^A-Z]/g, '');
@@ -44,6 +50,7 @@ const SpellingBee = () => {
                 onCenterLetterChange={handleCenterLetterChange}
                 onOuterLettersChange={handleOuterLettersChange}
                 onSolve={handleSolve}
+                outerLettersRef={outerLettersRef}
             />
             <div className="flex flex-col md:flex-row transition-all duration-300 ease-in-out">
                 <div className={`flex-shrink-0 transition-all duration-500 w-full ${solution ? 'md:w-3/5' : 'md:w-full'}`}>
@@ -65,6 +72,7 @@ interface InputSectionProps {
     onCenterLetterChange: (value: any) => void;
     onOuterLettersChange: (value: any) => void;
     onSolve: () => void;
+    outerLettersRef: React.RefObject<HTMLInputElement | null>;
 }
 
 const InputSection: React.FC<InputSectionProps> = ({
@@ -72,7 +80,8 @@ const InputSection: React.FC<InputSectionProps> = ({
     outerLetters,
     onCenterLetterChange,
     onOuterLettersChange,
-    onSolve
+    onSolve,
+    outerLettersRef
 }) => {
     return (
         <div className="flex flex-col gap-2">
@@ -92,6 +101,7 @@ const InputSection: React.FC<InputSectionProps> = ({
                     maxLength={6}
                     placeholder="Outer Letters"
                     className="w-36 bg-transparent placeholder:text-slate-400 text-slate-800 text-sm border-2 border-slate-200 rounded-md px-3 py-2 transition duration-300 ease focus:outline-none focus:border-teal hover:border-sky-blue shadow-sm focus:shadow"
+                    ref={outerLettersRef}
                 />
             </div>
             <div className="flex justify-center">
