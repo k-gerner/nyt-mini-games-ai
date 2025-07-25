@@ -16,3 +16,4 @@ code {
 @tailwind utilities;
 
 @import './styles/SpellingBee.css';
+@import './styles/LetterBoxed.css';

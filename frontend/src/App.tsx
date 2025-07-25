@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import SpellingBee from "./pages/SpellingBee";
+import LetterBoxed from "./pages/LetterBoxed";
 import './index.css';
 
 function App() {
@@ -13,12 +14,14 @@ function App() {
           <Link to="/home" className="text-dark-teal hover:underline">Home</Link>
           <Link to="/about" className="text-dark-teal hover:underline">About</Link>
           <Link to="/spelling_bee" className="text-dark-teal hover:underline">Spelling Bee</Link>
+          <Link to="/letter_boxed" className="text-dark-teal hover:underline">Letter Boxed</Link>
         </nav>
 
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/spelling_bee" element={<SpellingBee />} />
+          <Route path="/letter_boxed" element={<LetterBoxed />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Routes>
       </div>
