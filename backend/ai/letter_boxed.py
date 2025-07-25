@@ -132,7 +132,7 @@ def solve(words: List[str], all_letters: Set[str], max_solutions_length: int = D
     return sorted(solutions, key=lambda x: (len(x), sum(len(word) for word in x)))
 
 
-def run(letter_sides: List[Set[str]], only_length_two: bool = False) -> List[List[str]]:
+def run(letter_sides: List[Set[str]], max_solutions_length: int = DEFAULT_MAX_WORDS_IN_SOLUTION) -> List[List[str]]:
     """
     Run the Letter Boxed game with the provided input.
     
@@ -151,7 +151,6 @@ def run(letter_sides: List[Set[str]], only_length_two: bool = False) -> List[Lis
         reverse=True
     )
 
-    max_solutions_length = 2 if only_length_two else DEFAULT_MAX_WORDS_IN_SOLUTION
     return solve(words_from_given_letters, all_letters, max_solutions_length)
     
 
