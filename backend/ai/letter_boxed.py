@@ -102,9 +102,6 @@ def solve_words(
         if result is not None and len(result) < best_solution_length:
             best_solution_length = len(result)
             best_solution = result
-            if best_solution_length == len(new_words_found) + 1:
-                # Found a solution with one more word than the current words_found
-                break
     
     return best_solution
 
