@@ -15,6 +15,7 @@ const buttonStyle = "rounded-full border border-slate-300 py-2 px-4 text-center 
 const maxWordCountPickerButtonStyle = "py-2 px-4 inline-flex items-center gap-x-2 first:rounded-s-lg first:ms-0 last:rounded-e-lg border border-gray-200 hover:bg-teal text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-teal hover:border-teal focus:text-white focus:bg-dark-teal focus:border-teal active:border-dark-teal active:text-white active:bg-dark-teal";
 
 const LetterBoxed = () => {
+    const [hasSolved, setHasSolved] = useState(false); // if solve has run at least once
     const [solutions, setSolutions] = React.useState<string[]>([]);
     const [maxSolutionLength, setMaxSolutionLength] = useState<number>(2);
     const [letterSides, setLetterSides] = useState<LetterSides>({
@@ -28,6 +29,7 @@ const LetterBoxed = () => {
     const [loading, setLoading] = useState(false);
     const lettersInputRefs: React.RefObject<HTMLInputElement | null>[] = [useRef(null), useRef(null), useRef(null), useRef(null)];
     const handleSolve = async () => {
+        setHasSolved(true);
         setLoading(true);
         const res = await fetch('http://localhost:5001/api/letter_boxed', {
             method: 'POST',
@@ -99,10 +101,10 @@ const LetterBoxed = () => {
                 setMaxSolutionLength={setMaxSolutionLength}
             />
             <div className="flex flex-col md:flex-row transition-all duration-300 ease-in-out w-full">
-                <div className={`flex-shrink-0 transition-all duration-500 w-full ${solutions.length ? 'md:w-3/5' : 'md:w-full'}`}>
+                <div className={`flex-shrink-0 transition-all duration-500 w-full ${hasSolved ? 'md:w-3/5' : 'md:w-full'}`}>
                     <LetterBox letterSides={letterSides} />
                 </div>
-                {solutions.length > 0 && (
+                {hasSolved && (
                     <div className="w-full md:w-2/5 transition-all duration-300">
                         <AnswersSection
                             solutions={solutions}
@@ -321,8 +323,8 @@ const AnswersSection: React.FC<AnswersSectionProps> = ({ solutions, pageNumber, 
                 ) : (solutions.length > 0
                     ? <>
                         <div className="w-full gap-4 flex flex-col px-2 py-4 justify-start items-center">
-                            {solutions[pageNumber].split(',').map((word: any, index) => (
-                                <div className="flex items-center">
+                            {solutions[pageNumber].split(',').map((word, index) => (
+                                <div className="flex items-center" key={`${pageNumber}-${index}`}>
                                     <div className="font-bold rounded-s-lg bg-teal text-white text-center py-4 pl-6 pr-2">{index + 1}</div>
                                     <div className="font-bold rounded-e-lg  bg-teal p-4 text-white min-w-max text-center tracking-widest">
                                         {word.toUpperCase()}
