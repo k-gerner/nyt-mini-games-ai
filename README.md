@@ -18,3 +18,14 @@ In `/backend` run `uvicorn main:app --reload --port 5001 --log-level debug`.
 You should now be see the UI on `localhost:3000`.
 
 If you install any new dependencies in the backend, run `pip freeze > requirements.txt` in `/backend`. Make sure you are in your virtual env when you do this.
+
+## Demos
+### Spelling Bee
+![][spelling bee demo gif]
+
+### Letter Boxed
+![][letter boxed demo gif]
+
+
+[spelling bee demo gif]: https://github.com/k-gerner/gif-storage/blob/main/nyt/spelling_bee_demo.gif
+[letter boxed demo gif]: https://github.com/k-gerner/gif-storage/blob/main/nyt/letter_boxed_demo.gif
